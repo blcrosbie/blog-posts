@@ -142,6 +142,9 @@ Write 1 post ≤ 260 chars, punchy, one insight + CTA about "{args.title}". No h
     linkedin = linkedin.replace('—', ', ')
     xpost = xpost.replace('—', ', ')
 
+    mdx = mdx.replace('```mdx', '')
+    mdx = mdx.replace('```', '')
+
     (blog_dir / f"{slug}.mdx").write_text(mdx.strip() + "\n", encoding="utf-8")
     (social_dir / f"{slug}.linkedin.txt").write_text(linkedin.strip() + "\n", encoding="utf-8")
     (social_dir / f"{slug}.x.txt").write_text(xpost.strip() + "\n", encoding="utf-8")
