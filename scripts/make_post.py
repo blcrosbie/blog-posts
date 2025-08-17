@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-# Usage (Windows PowerShell example):
-#   $env:LLM_API_KEY="sk-..."            # or setx to persist; never commit keys
-#   $env:LLM_MODEL="gpt-oss-20b"         # or "gpt-4o-mini"
-#   $env:LLM_BASE_URL="https://api.openai.com/v1"   # default; swap for your OSS endpoint
-#   python scripts/make_post.py "QGIS + Google Earth Engine: 92 Feeds, One Plugin" 2020-07-01 corpus/youtube/clean/2020-qgis-gee-plugin-part-1.md --out-blog blog --out-social social
-
 import argparse
 import os
 import re
@@ -13,40 +7,40 @@ from pathlib import Path
 import requests
 from datetime import datetime
 
-BASE_URL = os.getenv("LLM_BASE_URL", "https://api.openai.com/v1")
-API_KEY  = os.getenv("LLM_API_KEY") or os.getenv("OPENAI_API_KEY")
-MODEL    = os.getenv("LLM_MODEL", "gpt-oss-20b")
-MAX_TOK  = int(os.getenv("LLM_MAX_OUTPUT_TOKENS", "1200"))
-TEMP     = float(os.getenv("LLM_TEMPERATURE", "0.7"))
-
-def chat(system: str, user: str) -> str:
-    if not API_KEY:
-        raise RuntimeError("Missing LLM_API_KEY / OPENAI_API_KEY environment variable.")
-    url = f"{BASE_URL.rstrip('/')}/chat/completions"
-    payload = {
-        "model": MODEL,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user",   "content": user},
-        ],
-        "temperature": TEMP,
-        "max_tokens": MAX_TOK,
-    }
-    headers = {"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"}
-    resp = requests.post(url, headers=headers, data=json.dumps(payload), timeout=120)
-    if resp.status_code != 200:
-        raise RuntimeError(f"LLM error {resp.status_code}: {resp.text}")
-    data = resp.json()
-    try:
-        return data["choices"][0]["message"]["content"].strip()
-    except Exception:
-        return ""
-
 def slugify(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^a-z0-9]+", "-", s)
     s = re.sub(r"(^-|-$)", "", s)
     return s
+
+def chat(system: str, user: str, *, base_url: str, api_key: str|None, model: str,
+         temperature: float, max_tokens: int) -> str:
+    url = f"{base_url.rstrip('/')}/chat/completions"
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user",   "content": user},
+        ],
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
+    headers = {"Content-Type": "application/json"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    resp = requests.post(url, headers=headers, data=json.dumps(payload), timeout=120)
+    if resp.status_code != 200:
+        raise RuntimeError(
+            f"LLM error {resp.status_code} from {url}\n"
+            f"model='{model}' base_url='{base_url}'\n"
+            f"Body: {resp.text[:800]}"
+        )
+    data = resp.json()
+    try:
+        return data["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        raise RuntimeError(f"Unexpected LLM response schema: {e}\n{json.dumps(data)[:800]}")
 
 def main():
     ap = argparse.ArgumentParser()
@@ -54,8 +48,13 @@ def main():
     ap.add_argument("date", help="YYYY-MM-DD")
     ap.add_argument("source_md_path", help="Cleaned markdown transcript")
     ap.add_argument("--voice", default="prompts/VOICE_GUIDE.md")
-    ap.add_argument("--out-blog", default="blog", help="Output dir for MDX")
-    ap.add_argument("--out-social", default="social", help="Output dir for social posts")
+    ap.add_argument("--out-blog", default="blog")
+    ap.add_argument("--out-social", default="social")
+    ap.add_argument("--model", default=os.getenv("LLM_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini")))
+    ap.add_argument("--base-url", default=os.getenv("LLM_BASE_URL", os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")))
+    ap.add_argument("--api-key", default=os.getenv("LLM_API_KEY", os.getenv("OPENAI_API_KEY")))
+    ap.add_argument("--max-output-tokens", type=int, default=int(os.getenv("LLM_MAX_OUTPUT_TOKENS", "1200")))
+    ap.add_argument("--temperature", type=float, default=float(os.getenv("LLM_TEMPERATURE", "0.7")))
     args = ap.parse_args()
 
     # Validate date
@@ -73,9 +72,10 @@ def main():
         "Lexicon: application vs education; adapt; B2B; CI/CD; GCP; geospatial."
     )
 
-    # 1) MDX draft
-    mdx_system = "You are Brandon Crosbie’s writing partner. Output only valid MDX."
-    mdx_user = f"""VOICE_GUIDE:
+    # 1) MDX
+    mdx = chat(
+        "You are Brandon Crosbie’s writing partner. Output only valid MDX.",
+        f"""VOICE_GUIDE:
 {voice}
 
 Create a 1200–1600 word MDX blog post with frontmatter:
@@ -91,17 +91,23 @@ Ground your claims ONLY in the SOURCE below. Use H2/H3 headings, include short c
 
 SOURCE:
 {notes}
-"""
-    mdx = chat(mdx_system, mdx_user)
+""",
+        base_url=args.base_url, api_key=args.api_key, model=args.model,
+        temperature=args.temperature, max_tokens=args.max_output_tokens
+    )
 
-    # 2) Social bullets (short)
-    bullets_system = "Summarize for social drafting."
-    bullets_user = f"Give 4–6 bullets (max ~600 chars total) of the key takeaways from this MDX:\n{mdx[:6000]}"
-    bullets = chat(bullets_system, bullets_user)
+    # 2) bullets
+    bullets = chat(
+        "Summarize for social drafting.",
+        f"Give 4–6 bullets (max ~600 chars total) of the key takeaways from this MDX:\n{mdx[:6000]}",
+        base_url=args.base_url, api_key=args.api_key, model=args.model,
+        temperature=args.temperature, max_tokens=600
+    )
 
     # 3) LinkedIn
-    li_system = "You are Brandon writing for LinkedIn."
-    li_user = f"""VOICE_GUIDE:
+    linkedin = chat(
+        "You are Brandon writing for LinkedIn.",
+        f"""VOICE_GUIDE:
 {voice}
 
 Write a 900–1100 character LinkedIn post teeing up the blog "{args.title}".
@@ -111,21 +117,30 @@ No more than 3 hashtags at the end.
 
 BULLETS:
 {bullets}
-"""
-    linkedin = chat(li_system, li_user)
+""",
+        base_url=args.base_url, api_key=args.api_key, model=args.model,
+        temperature=args.temperature, max_tokens=700
+    )
 
     # 4) X
-    x_system = "You are Brandon posting to X."
-    x_user = f"""VOICE_GUIDE:
+    xpost = chat(
+        "You are Brandon posting to X.",
+        f"""VOICE_GUIDE:
 {voice}
 
-Write 1 post ≤ 260 chars, punchy, one insight + CTA about "{args.title}". No hashtags."""
-    xpost = chat(x_system, x_user)
+Write 1 post ≤ 260 chars, punchy, one insight + CTA about "{args.title}". No hashtags.""",
+        base_url=args.base_url, api_key=args.api_key, model=args.model,
+        temperature=args.temperature, max_tokens=260
+    )
 
-    # Save
     slug = f"{args.date}-{slugify(args.title)}"
     blog_dir   = Path(args.out_blog);   blog_dir.mkdir(parents=True, exist_ok=True)
     social_dir = Path(args.out_social); social_dir.mkdir(parents=True, exist_ok=True)
+
+    # Remove the notorious emdash
+    mdx = mdx.replace('—', ', ')
+    linkedin = linkedin.replace('—', ', ')
+    xpost = xpost.replace('—', ', ')
 
     (blog_dir / f"{slug}.mdx").write_text(mdx.strip() + "\n", encoding="utf-8")
     (social_dir / f"{slug}.linkedin.txt").write_text(linkedin.strip() + "\n", encoding="utf-8")
