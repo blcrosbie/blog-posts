@@ -1,4 +1,9 @@
 .env
 
-*/clean/*
-*/raw/*
+
+corpus/*/clean/*.md
+corpus/*/raw/*.md
+
+corpus/*/clean/*.txt
+corpus/*/raw/*.txt
+
