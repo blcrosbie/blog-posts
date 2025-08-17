@@ -2,17 +2,17 @@ name: Notify Site of Blog Update
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger site repo workflow
+      - name: Dispatch event to site repo
         run: |
           curl -X POST \
-            -H "Authorization: token ${{ secrets.PERSONAL_TOKEN }}" \
-            -H "Accept: application/vnd.github.everest-preview+json" \
-            https://api.github.com/repos/hg-sol-projects/halogen-solutions/dispatches \
+            -H "Authorization: Bearer ${{ secrets.REPOSITORY_DISPATCH }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/HalogenSolutions/Blog/dispatches \
             -d '{"event_type":"update_blog"}'
