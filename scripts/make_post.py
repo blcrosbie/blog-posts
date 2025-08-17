@@ -83,8 +83,8 @@ Create a 1200–1600 word MDX blog post with frontmatter:
 title: "{args.title}"
 date: "{args.date}"
 excerpt: (one sentence)
-tags: [geospatial, google-earth-engine, qgis]
-hero: "/images/blog/gee-qgis.png"
+tags: [geospatial, google-earth-engine, qgis, python]
+hero: "/images/bulb-icon.png"
 ---
 
 Ground your claims ONLY in the SOURCE below. Use H2/H3 headings, include short callouts and code blocks where useful. No JSX components, just MDX.
