@@ -7,6 +7,12 @@ from pathlib import Path
 import requests
 from datetime import datetime
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except Exception:
+    pass
+
 def slugify(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^a-z0-9]+", "-", s)

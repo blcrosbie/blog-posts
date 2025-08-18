@@ -1,0 +1,73 @@
+---
+title: "QGIS Features and the Simplicity of Hexagon Geometry"
+date: "2023-06-16"
+excerpt: "Exploring the power of QGIS and hexagon geometry in geospatial data analysis."
+tags: [geospatial, google-earth-engine, qgis, python]
+hero: "/images/bulb-icon.png"
+---
+
+## The Overwhelming helpfulness of QGIS:
+
+QGIS is a hidden treasure, if you are not in the inner circle of what seems like a small, by highly impactful GIS community, relative to the ever-expanding world of Data Science and AI. The open source software is incredibly accessible and a must have for anyone looking to drill down into data on a literal global scale with limited budget.
+
+However, there is a learning curve, and walking through that process step by step by simply having an itching curiosity to see real data from a vast collection of Satellite images, provided endless use-cases to try out all toolsets, canvas effects, and other open-source plugins.
+
+One thing I realized was the immense potential for the ability to script using Python within the tool, by enabling the right plugins, one could ciphen all Google Earth Engine data into QGIS for endless analysis with multple layers over top of one another to see correlations or unique patterns otherwise lost in the terabytes of measurements.
+
+But, in order to extract in a predictable fashion, with the ability to utilize parallelization, a shape filter would be needed to create a tessellation across the map.
+
+### Hexagons: The Geometry of Efficiency
+
+Hexagons are the key; they represent efficiency in data representation. Think of a circle, which requires infinite points to define its boundary. Now, contrast that with a hexagon, which only needs six. This efficiency translates to faster render times and less computational overhead, with a shape that is able to perfectly fit together with other equal sizes, ad infinitum.
+
+### Learning Through Application: Building my own QGIS Plugin
+
+To get started with QGIS and explore the power of hexagons, you’ll want to utilize a specific plugin that incorporates Google Earth Engine. Here’s a quick step-by-step guide on how to set it up:
+
+1. **Download the Plugin**: Start by downloading the zip file from the plugin's [GitHub repository](https://github.com/your-plugin-repo).
+2. **Install the Plugin**: In QGIS, go to `Manage and Install Plugins`, and select `Install from ZIP`. Navigate to your downloaded file and install.
+3. **Set Up Google Earth Engine**: Ensure you have the Google Earth Engine Python API installed. This is crucial for using the features of the plugin effectively.
+4. **Initiate the Plugin**: Once installed, you should see a new icon in your QGIS toolbar. Click it to open the dock widget.
+
+This plugin is your entry point into the world of geospatial data visualization. The default setting loads a Google satellite image, allowing you to visualize your surroundings in real-time.
+
+### Practical Application: Finding Power Plants
+
+Now that you have the plugin set up, let's apply it to a real-world scenario. Suppose I want to find power plants within my hexagonal filter. Here’s how to do it:
+
+1. **Draw Your Hexagon**: Use the `Find Me` button to locate your position and draw a hexagon around it.
+2. **Select Feature Collection**: Within the plugin, navigate to the feature collections that include data on power plants.
+3. **Extract Data**: After selecting the power plants dataset, use the `Extract` button to gather information about the plants located within your hexagon.
+
+python
+# Example code to extract power plants in Python
+import ee
+ee.Initialize()
+
+# Define the hexagon geometry
+hexagon = ee.Geometry.Polygon([
+    [[long1, lat1], [long2, lat2], [long3, lat3], [long4, lat4], [long5, lat5], [long6, lat6]]
+])
+
+# Load power plants feature collection
+power_plants = ee.FeatureCollection("path/to/power_plants")
+
+# Filter power plants within hexagon
+filtered_plants = power_plants.filterBounds(hexagon)
+
+# Print the result
+print(filtered_plants.getInfo())
+
+
+### Next Steps: What can we do with this data?
+
+As we conclude this exploration of QGIS and hexagon geometry, it's also just as import to stop and think about what we're looking at. How can we leverage these tools to investigate the world around us? 
+
+#### Key Takeaways:
+- **Efficiency of Hexagons**: Use hexagons for faster data rendering and efficient spatial filtering.
+- **Hands-on Practice**: Leverage QGIS plugins to apply your knowledge in real-world scenarios.
+- **Enabling Endless Curiosity**: What answers do we find when viewing multiple datasets in geospatially similar bounds, and are we asking the right questions?
+
+### Call to Action: Level Up Your Geospatial Skills
+
+Now is the time to dive deeper into the world of QGIS and geospatial data analysis. Download the QGIS plugin, experiment with hexagonal geometry, and think critically about the data you handle. The tools are at your fingertips; it’s up to you to harness their power responsibly.
