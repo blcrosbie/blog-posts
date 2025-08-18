@@ -10,3 +10,4 @@ corpus/*/raw/*.mdx
 corpus/*/clean/*.txt
 corpus/*/raw/*.txt
 
+prompts/*.md
