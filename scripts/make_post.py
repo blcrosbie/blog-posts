@@ -150,8 +150,12 @@ Write 1 post ≤ 260 chars, punchy, one insight + CTA about "{args.title}". No h
     linkedin = linkedin.replace('—', ', ')
     xpost = xpost.replace('—', ', ')
 
+    # get the first mdx fence backticks
     mdx = mdx.replace('```mdx', '')
-    mdx = mdx.replace('```', '')
+    
+    # get the last 3 fence backticks ```
+    if mdx.endswith('```'):
+        mdx = mdx[:-3]
 
     (blog_dir / f"{slug}.mdx").write_text(mdx.strip() + "\n", encoding="utf-8")
     (social_dir / f"{slug}.linkedin.txt").write_text(linkedin.strip() + "\n", encoding="utf-8")

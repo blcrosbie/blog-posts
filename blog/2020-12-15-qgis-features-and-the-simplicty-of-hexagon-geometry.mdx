@@ -1,6 +1,6 @@
 ---
-title: QGIS Features and the Simplicity of Hexagon Geometry
-slug: qgis-features-and-the-simplicty-of-hexagon-geometry
+title: The Simplicity of Hexagon Geometry
+slug: the-simplicty-of-hexagon-geometry
 date: '2020-12-15'
 excerpt: Exploring the power of QGIS and hexagon geometry in geospatial data analysis.
 tags:
@@ -44,7 +44,7 @@ Now that you have the plugin set up, let's apply it to a real-world scenario. Su
 2. **Select Feature Collection**: Within the plugin, navigate to the feature collections that include data on power plants.
 3. **Extract Data**: After selecting the power plants dataset, use the `Extract` button to gather information about the plants located within your hexagon.
 
-python
+```python
 # Example code to extract power plants in Python
 import ee
 ee.Initialize()
@@ -62,7 +62,7 @@ filtered_plants = power_plants.filterBounds(hexagon)
 
 # Print the result
 print(filtered_plants.getInfo())
-
+```
 
 ### Next Steps: What can we do with this data?
 
