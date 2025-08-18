@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import requests
 from datetime import datetime
+from slugify import slugify
 
 try:
     from dotenv import load_dotenv
@@ -89,8 +90,9 @@ Create a 1200–1600 word MDX blog post with frontmatter:
 title: "{args.title}"
 date: "{args.date}"
 excerpt: (one sentence)
-tags: [geospatial, google-earth-engine, qgis, python]
+tags: []
 hero: "/images/bulb-icon.png"
+slug: "{slugify(args.title)}"
 ---
 
 Ground your claims ONLY in the SOURCE below. Use H2/H3 headings, include short callouts and code blocks where useful. No JSX components, just MDX.
