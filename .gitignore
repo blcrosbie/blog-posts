@@ -4,6 +4,9 @@
 corpus/*/clean/*.md
 corpus/*/raw/*.md
 
+corpus/*/clean/*.mdx
+corpus/*/raw/*.mdx
+
 corpus/*/clean/*.txt
 corpus/*/raw/*.txt
 
