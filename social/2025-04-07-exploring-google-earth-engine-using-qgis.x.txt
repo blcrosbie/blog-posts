@@ -1,1 +1,0 @@
-Exploring Google Earth Engine via QGIS can streamline your geospatial workflows. With GEE's processing power and QGIS's visualization capabilities, you can handle large datasets efficiently. Try integrating a GEE layer into your QGIS project and measure the performance difference in your analyses.
