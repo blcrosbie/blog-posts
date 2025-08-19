@@ -1,1 +1,0 @@
-Kaggle competitions can sharpen your skills, but they often reward overfitting to training sets. For real-world impact, shift focus to Data Science for Good (DS4G) challenges. Tackle meaningful problems and track your model’s performance in the wild. Dive in and measure your impact.

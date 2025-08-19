@@ -10,4 +10,7 @@ corpus/*/raw/*.mdx
 corpus/*/clean/*.txt
 corpus/*/raw/*.txt
 
-prompts/*.md
+prompts/VOICE_GUIDE.md
+prompts/VOICE_GUIDE.yaml
+
+social/*.txt

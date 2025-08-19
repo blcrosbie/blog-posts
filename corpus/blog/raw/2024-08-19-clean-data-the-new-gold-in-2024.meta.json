@@ -1,0 +1,22 @@
+{
+  "title": "Clean Data: The New Gold in 2024",
+  "date": "2024-08-19",
+  "slug": "2024-08-19-clean-data-the-new-gold-in-2024",
+  "source_path": "corpus\\youtube\\clean\\2024-clean-data-is-new-gold-token2049.md",
+  "category": "youtube",
+  "model": "gpt-4o-mini",
+  "base_url": "https://api.openai.com/v1",
+  "voice_file": "prompts\\VOICE_GUIDE.yaml",
+  "voice_dials": {
+    "Optimism": 4,
+    "Skepticism": 6,
+    "DryHumor": 4,
+    "TechnicalDensity": 8,
+    "PersonalAnecdotes": 3,
+    "CTAStrength": 6,
+    "Hedging": 6,
+    "JargonLevel": 7,
+    "Quantification": 8
+  },
+  "created_utc": "2024-08-19T00:02:46.906142Z"
+}
