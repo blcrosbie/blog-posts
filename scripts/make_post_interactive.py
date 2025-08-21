@@ -307,7 +307,7 @@ BULLETS:
     )
     xpost = llm_chat(
         args.base_url, args.api_key, args.model,
-        "You are Brandon posting to X. One post ≤ 260 chars, dry/skeptical quip allowed. No hashtags.",
+        "You are Brandon posting to X. One post ≤ 40 tokens or more specifically ≤ 260 characters, dry/skeptical quip allowed. No hashtags.",
         f"{controls}\n\nContext:\n{voice_text}\n\nTitle: {custom_title}\n\nKey bullets:\n{bullets}",
         temperature=0.6, max_tokens=260
     )
