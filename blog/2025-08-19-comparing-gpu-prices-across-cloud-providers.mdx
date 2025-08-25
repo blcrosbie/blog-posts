@@ -1,0 +1,93 @@
+---
+title: "Comparing GPU Prices Across Cloud Providers"
+date: "2025-08-19"
+excerpt: "A detailed analysis of GPU pricing across various cloud providers."
+tags: [data-science, gpu, cloud, ai, machine-learning]
+hero: "/images/bulb-icon.png"
+---
+
+## Introduction
+
+As artificial intelligence (AI) continues to gain traction, selecting the right GPU for your workloads can become a daunting task. The cost of GPU usage varies significantly across cloud providers, impacting both development budgets and project timelines. In this post, we'll analyze GPU pricing across various cloud platforms, helping you make informed decisions based on your specific needs.
+
+## Problem Framing
+
+Choosing the right GPU isn't just about performance; it's also about cost efficiency. With so many options available, understanding the trade-offs between price, performance, and features is crucial for technical founders and data engineering leads. The following sections will explore GPU pricing across different categories, high performance, mid-range, and budget options.
+
+## System Model
+
+We categorize GPUs into three tiers based on their intended use:
+
+1. **High Performance**: Optimized for large-scale training and inference.
+2. **Mid-Range**: Suitable for development, fine-tuning, and inference.
+3. **Budget**: Ideal for learning and small-scale projects.
+
+### High Performance GPUs
+
+| GPU Model      | Price (per hour) | Total VRAM | vCPUs | RAM   |
+|----------------|------------------|------------|-------|-------|
+| Nvidia L40S    | $0.34            | 48GB       | 4     | 8GB   |
+| Nvidia A100    | $0.42            | 40GB       | 4     | 8GB   |
+| Nvidia H100    | $1.77            | 80GB       | 30    | 120GB |
+| Nvidia H200    | $1.90            | 141GB      | 44    | 182GB |
+| AMD MI300X     | $1.99            | 192GB      | 20    | 257GB |
+
+### Mid-Range GPUs
+
+| GPU Model         | Price (per hour) | Total VRAM | vCPUs | RAM   |
+|-------------------|------------------|------------|-------|-------|
+| Nvidia RTX 5090   | $0.29            | 32GB       | 4     | 8GB   |
+| Nvidia L4         | $0.39            | 24GB       | 12    | 50GB  |
+| Nvidia A40        | $0.40            | 48GB       | 9     | 50GB  |
+| Nvidia RTX 6000 Ada | $0.77          | 48GB       | 10    | 167GB |
+| Nvidia RTX 4090   | $0.23            | 24GB       | 4     | 8GB   |
+
+### Budget GPUs
+
+| GPU Model         | Price (per hour) | Total VRAM | vCPUs | RAM   |
+|-------------------|------------------|------------|-------|-------|
+| Nvidia RTX 2060   | $0.05            | 6GB        | 4     | 8GB   |
+| Nvidia RTX 3070   | $0.05            | 8GB        | 4     | 8GB   |
+| Nvidia RTX 4060 Ti | $0.12           | 8GB        | 4     | 8GB   |
+| Nvidia RTX 3080 Ti | $0.12           | 12GB       | 8     | 10GB  |
+| Nvidia RTX 4000   | $0.34            | 16GB       | 4     | 8GB   |
+
+## Trade-offs
+
+When comparing GPUs, consider the following trade-offs:
+
+- **Cost vs. Performance**: Higher performance GPUs typically cost more, but they can reduce training time significantly. For example, an H100 GPU at $1.77/hour may be more cost-effective for large models than using multiple cheaper GPUs.
+
+- **VRAM Requirements**: More VRAM allows for larger models and datasets to be processed simultaneously. If your application requires extensive data handling, opting for GPUs with higher VRAM may justify their expense.
+
+- **Provider Reliability**: Different cloud providers offer varying levels of service reliability and support. Assessing the quality of service may save costs in the long run by minimizing downtime.
+
+## Worked Example
+
+Let's consider an example where a team needs to train a deep learning model. They estimate that their model will require 40GB of VRAM and will run for approximately 100 hours.
+
+- **Using Nvidia A100**: 
+  - Cost: $0.42/hour
+  - Total Cost: $0.42 * 100 = $42.00
+
+- **Using Nvidia RTX 5090**: 
+  - Cost: $0.29/hour
+  - Total Cost: $0.29 * 100 = $29.00
+
+The A100 offers better performance for training large models, but the RTX 5090 offers a substantial cost saving for smaller tasks.
+
+## Checklist for Selecting a GPU
+
+- **Define your workload**: Understand the computational requirements of your AI model.
+- **Evaluate VRAM needs**: Ensure that the GPU you choose has enough VRAM for your datasets.
+- **Consider cost implications**: Calculate the total cost of usage based on your expected runtime.
+- **Assess provider reliability**: Look into service level agreements (SLAs) and support options.
+
+## Next Steps
+
+To optimize your GPU usage, consider implementing the following actions:
+
+- Analyze your current workloads to determine the most cost-effective GPU options.
+- Set up monitoring to track GPU usage and costs over time
+
+---
